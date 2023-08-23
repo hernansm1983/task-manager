@@ -2,18 +2,21 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
+//use App\Repository\UserRepository;
+use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Users
+ * User
  *
  * @ORM\Table(name="users")
  * @ORM\Entity
  */
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @var int
@@ -35,6 +38,8 @@ class User
      * @var string|null
      *
      * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     * @Assert\NotBlank
+     * @Assert\Regex("/[a-zA-Z ]/")
      */
     private $name;
 
@@ -42,6 +47,8 @@ class User
      * @var string|null
      *
      * @ORM\Column(name="surname", type="string", length=200, nullable=true)
+     * @Assert\NotBlank
+     * @Assert\Regex("/[a-zA-Z ]/")
      */
     private $surname;
 
@@ -49,13 +56,16 @@ class User
      * @var string|null
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @Assert\NotBlank
+     * @Assert\Email( message = "El email '{{ value }}' no es valido") 
      */
-    private $email;
+    protected $email;
 
     /**
-     * @var string|null
+     * @var string The hashed password
      *
      * @ORM\Column(name="password", type="string", length=255, nullable=true)
+     * @Assert\NotBlank
      */
     private $password;
 
@@ -67,9 +77,8 @@ class User
     private $createdAt;
     
     /**
-     * 
-     * @var type
      * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="user")
+     * @var type
      */
     private $tasks;
     
@@ -87,7 +96,7 @@ class User
         return $this->role;
     }
 
-    public function setRole(?string $role): static
+    public function setRole(?string $role): self
     {
         $this->role = $role;
 
@@ -99,7 +108,7 @@ class User
         return $this->name;
     }
 
-    public function setName(?string $name): static
+    public function setName(?string $name): self
     {
         $this->name = $name;
 
@@ -111,7 +120,7 @@ class User
         return $this->surname;
     }
 
-    public function setSurname(?string $surname): static
+    public function setSurname(?string $surname): self
     {
         $this->surname = $surname;
 
@@ -123,43 +132,77 @@ class User
         return $this->email;
     }
 
-    public function setEmail(?string $email): static
+    public function setEmail(?string $email): self
     {
         $this->email = $email;
 
         return $this;
     }
-
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(?string $password): static
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt()
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(?\DateTimeInterface $createdAt): static
+    public function setCreatedAt($createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
-    
+
     /**
      * @return Collection|Task[]
      */
-    
-    public function getTasks(): Collection{
+    public function getTasks():Collection{
         return $this->tasks;
+    }
+    
+    
+     //--- EL USERNAME ES EL EMAIL DEL USUARIO ---
+   /* public function getUsername(){
+        return $this->email;
+    }*/
+    
+    public function getSalt(){
+        return null;
+    }
+    
+    public function getRoles():array {
+        return array('ROLE_USER');
+    }
+    
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+    
+    public function eraseCredentials(){}
+    
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->getUserIdentifier();
     }
 
 }
