@@ -22,7 +22,7 @@
                         <li><a href="{{ path('tasks') }}">Inicio</a></li>
                     {% if app.user %}
                         
-                        <li><a href="">Mis Tareas</li>
+                        <li><a href="{{ path('my_tasks') }}">Mis Tareas</li>
                         <li><a href="{{ path('task_creation') }}">Crear Tareas</li>
                         <li class="right"><a href="">{{ app.user.name ~ ' ' ~ app.user.surname }}</a></li>
                         <li class="right"><a href="{{ path('logout') }}">Logout</a></li>

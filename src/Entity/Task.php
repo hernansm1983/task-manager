@@ -22,6 +22,13 @@ class Task
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
+    
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="user_id", type="integer", nullable=false)
+     */
+    private $userid;
 
     /**
      * @var string|null
@@ -50,6 +57,13 @@ class Task
      * @ORM\Column(name="hours", type="integer", nullable=true)
      */
     private $hours;
+    
+    /**
+     * @var string|null
+     *
+     * @ORM\Column(name="state", type="string", nullable=true)
+     */
+    private $state;
 
     /**
      * @var \DateTime|null
@@ -120,6 +134,18 @@ class Task
 
         return $this;
     }
+    
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): static
+    {
+        $this->state = $state;
+
+        return $this;
+    }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
@@ -129,6 +155,18 @@ class Task
     public function setCreatedAt(?\DateTimeInterface $createdAt): static
     {
         $this->createdAt = $createdAt;
+
+        return $this;
+    }
+    
+    public function getUserId(): ?int
+    {
+        return $this->userid;
+    }
+
+    public function setUserId(?int $userid): self
+    {
+        $this->userid = $userid;
 
         return $this;
     }
@@ -144,6 +182,4 @@ class Task
 
         return $this;
     }
-
-
 }

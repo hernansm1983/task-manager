@@ -48,7 +48,8 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
             //var_dump($user);
-            return $this->redirectToRoute('tasks');
+            $this->addFlash('message', 'Usuario Registrado Correctamente, ya puede Loguerase');
+            return $this->redirectToRoute('login');
         }
         
         return $this->render('user/register.html.twig', [

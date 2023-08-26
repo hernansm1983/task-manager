@@ -6,6 +6,22 @@
 
 <div class="example-wrapper">
     <h2>{{ task.title }}</h2>
+    <p class="data-task">
+        {{ task.user.name }} {{ task.user.surname }} | {{ task.getCreatedAt|date("d/m/Y - h:i") }} |
+        Prioridad -> 
+                {% if task.priority == 'high' %}
+                    {{ 'Alta' }}
+                {% endif %}
+                
+                {% if task.priority == 'medium' %}
+                    {{ 'Media' }}
+                {% endif %}
+                
+                {% if task.priority == 'low' %}
+                    {{ 'Baja' }}
+                {% endif %}
+         | {{ task.getHours }} Horas Presupuestadas
+    </p>
     <p>{{ task.content }}</p>
     
     

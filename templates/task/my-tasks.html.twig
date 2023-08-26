@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Todas las Tareas{% endblock %}
+{% block title %}Mis Tareas{% endblock %}
 
 {% block body %}
 
 <div class="example-wrapper">
-    <h2>Todas Las Tareas: ( {{ tasks|length }} Tareas encontradas)</h2>
+    <h2>Mis Tareas: ( {{ tasks|length }} Tareas encontradas)</h2> 
     
     {% for message in app.flashes('message') %}
         <div class="message">

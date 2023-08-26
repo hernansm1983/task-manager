@@ -12,6 +12,7 @@
             <file>file:/opt/lampp/htdocs/task-manager/composer.json</file>
             <file>file:/opt/lampp/htdocs/task-manager/public/assets/css/style.css</file>
             <file>file:/opt/lampp/htdocs/task-manager/src/Controller/TaskController.php</file>
+            <file>file:/opt/lampp/htdocs/task-manager/templates/task/detail.html.twig</file>
             <file>file:/opt/lampp/htdocs/task-manager/templates/task/index.html.twig</file>
             <file>file:/opt/lampp/htdocs/task-manager/src/Controller/UserController.php</file>
             <file>file:/opt/lampp/htdocs/task-manager/config/packages/security.yaml</file>

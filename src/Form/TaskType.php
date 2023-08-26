@@ -29,8 +29,17 @@ class TaskType extends AbstractType{
                 ->add('hours', TextType::class, array(
                     'label' => 'Horas Presupuestadas'
         ))
+                ->add('state', ChoiceType::class, array(
+                    'label' => 'Estado',
+                    'choices' => array(
+                        'Activa' => 'active',
+                        'Inactiva' => 'inactive',
+                        'Finalizada' => 'finished'
+                    )
+                    
+        ))                
                 ->add('submit', SubmitType::class, array(
-                    'label' => 'Registrarse'
+                    'label' => 'Guardar'
         ));
     }
 }

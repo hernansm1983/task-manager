@@ -1,0 +1,55 @@
+{% if(tasks|length >= 1) %}
+    
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Tarea</th>
+        <th>Prioridad</th>
+        <th>Horas Presupuestadas</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+    {% for task in tasks %}
+        <tr>
+            <td>{{ task.id }}</td>
+            <td>{{ task.title }}</td>
+            <td>
+                {% if task.priority == 'high' %}
+                    {{ 'Alta' }}
+                {% endif %}
+
+                {% if task.priority == 'medium' %}
+                    {{ 'Media' }}
+                {% endif %}
+
+                {% if task.priority == 'low' %}
+                    {{ 'Baja' }}
+                {% endif %}
+            </td>
+            <td>{{ task.hours }}</td>
+            <td>
+                {% if task.state == 'active' %}
+                    {{ 'Activa' }}
+                {% endif %}
+
+                {% if task.state == 'inactive' %}
+                    {{ 'Inactiva' }}
+                {% endif %}
+
+                {% if task.state == 'finished' %}
+                    {{ 'Finalizada' }}
+                {% endif %}
+            </td>
+            <td class="buttons">
+                <a href="{{ path('task_detail', {'id':task.id}) }}" class="btn-view">Ver</a>
+                {% if not user is null and user.id == task.userid %}
+                    <a href="{{ path('task_edit', {'id':task.id}) }}" class="btn-edit">Editar</a>
+                    <a href="{{ path('task_delete', {'id':task.id}) }}" onclick="return confirm('¿Estás seguro de que deseas eliminar este registro?')" class="btn-delete">Eliminar</a>
+                {% endif %}    
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+    <strong>No Existen Tareas asignadas para éste usuario</strong>
+{% endif %}

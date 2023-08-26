@@ -3,10 +3,6 @@
 {% block title %}Login de Usuarios{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
 <div class="example-wrapper">
     <h1>Login de Usuarios</h1>
@@ -16,6 +12,12 @@
             {{ error.messagekey|trans(error.messageData, 'security') }}
         </div>
     {% endif %}
+    
+    {% for message in app.flashes('message') %}
+        <div class="message">
+            {{ message }}
+        </div>
+    {% endfor %}
     
     {% if app.user %}
        {{ dump(app.user) }} 
@@ -29,7 +31,7 @@
         
         <div class="clearfix"></div>
         
-        <input type="submit" value="Ingresar" />
+        <input type="submit" id="submit_button" value="Ingresar" />
     </form>
 </div>
 {% endblock %}
