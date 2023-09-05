@@ -7,11 +7,20 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TaskType extends AbstractType{
     
     public function buildForm(FormBuilderInterface $builder, array $options){
-        $builder->add('title', TextType::class, array(
+        $builder->add('assigneduserid', ChoiceType::class, array( // Agregar campo de selección para usuarios
+                    'label' => 'Asignada a',
+                    'choices' => $options['users'], // Opciones de usuarios pasadas desde el controlador
+                    'choice_value' => 'id',
+                    'choice_label' => function ($user) {
+                        return $user->getSurname().', '.$user->getName();
+                    },
+        ))
+                ->add('title', TextType::class, array(
                     'label' => 'Titulo'
         ))
                 ->add('content', TextareaType::class, array(
@@ -42,4 +51,13 @@ class TaskType extends AbstractType{
                     'label' => 'Guardar'
         ));
     }
+
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'users' => [], // Definir la opción 'users' aquí
+        ]);
+    }
+
 }

@@ -43,15 +43,55 @@ class TaskController extends AbstractController
     
     // Da de Alta una Nueva Tarea
     public function creation(Request $request, UserInterfase $user, ManagerRegistry $doctrine){
+
+        $em = $doctrine->getManager();
+        //$users = $em->getRepository(User::class)->findAll()->orderBy('surname', 'DESC') ;
+
+        $repository = $em->getRepository(User::class);
+        $queryBuilder = $repository->createQueryBuilder('u'); // 'u' es un alias para la entidad User
+
+        $users = $queryBuilder
+            ->orderBy('u.surname', 'DESC') // Reemplaza 'surname' con el nombre del campo que representa el apellido en tu entidad User
+            ->getQuery()
+            ->getResult();
+
+        /*foreach($users as $user){
+            echo $user->id.' '.$user->name.'</br>';
+        };die();*/
         
+
         $task = new Task();
-        $form = $this->createForm(TaskType::class, $task);
-        
+       // $form = $this->createForm(TaskType::class, $task);
+
+        $form = $this->createForm(TaskType::class, $task, [
+            'users' => $users, // Pasar la lista de usuarios como opciones al formulario
+        ]);
+        /*echo '<pre>';
+        var_dump($form);
+        echo '</pre>'; die();*/
+        //echo $request->assigneduserid;
+        //var_dump($request->request->all());die();
+        //dump($request); die();
         $form->handleRequest($request);
+        //echo "no entro"; die();
         
         if($form->isSubmitted() && $form->isValid()){
+            //echo "entro al form"; die();
             $task->setCreatedAt(new \Datetime('now'));
             $task->setUser($user);
+
+            // Agregamos el Usuario asignado
+            // Obtener el usuario seleccionado del formulario
+            $assigneduserid = $form->get('assigneduserid')->getData();
+
+            //var_dump($assigneduserid); die();
+
+            // Buscar el usuario en función de su ID
+            $assignedUser = $em->getRepository(User::class)->find($assigneduserid);
+
+            // Establecer el usuario asignado a la tarea
+            $task->setAssignedUserId($assignedUser);
+            
             
             $em = $doctrine->getManager();
             $em->persist($task);

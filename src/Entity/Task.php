@@ -31,6 +31,16 @@ class Task
     private $userid;
 
     /**
+     * @var User|null
+     * 
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="assigned_user_id", referencedColumnName="id")
+     * })
+     */
+    private $assigneduserid;
+
+    /**
      * @var string|null
      *
      * @ORM\Column(name="title", type="string", length=255, nullable=true)
@@ -179,6 +189,18 @@ class Task
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getAssignedUserId(): ?User
+    {
+        return $this->assigneduserid;
+    }
+
+    public function setAssignedUserId(?User $assigneduserid): self
+    {
+        $this->assigneduserid = $assigneduserid;
 
         return $this;
     }
